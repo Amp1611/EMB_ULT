@@ -49,6 +49,7 @@ function Counter({ label, value }) {
 function Dashboard({ onLogout }) {
   const [members, setMembers] = useState([])
   const [loading, setLoading] = useState(true)
+  const [tab, setTab] = useState('pending')
 
   const load = useCallback(async () => {
     const { data, error } = await supabase
@@ -82,6 +83,8 @@ function Dashboard({ onLogout }) {
 
   const pending = members.filter((m) => m.status === 'pending')
   const approved = members.filter((m) => m.status === 'approved')
+  const rejected = members.filter((m) => m.status === 'rejected')
+  const shown = { pending, approved, rejected }[tab]
 
   return (
     <div className="mx-auto max-w-5xl space-y-6 p-4 md:p-8">
@@ -99,14 +102,28 @@ function Dashboard({ onLogout }) {
         <Counter label="Approved" value={approved.length} />
       </div>
 
-      <h2 className="text-lg font-medium">Pending review</h2>
+      <div className="flex gap-2">
+        {[
+          ['pending', 'Pending', pending.length],
+          ['approved', 'Approved', approved.length],
+          ['rejected', 'Rejected', rejected.length],
+        ].map(([key, label, count]) => (
+          <button key={key} onClick={() => setTab(key)}
+            className={`rounded-lg px-3 py-1.5 text-sm ${
+              tab === key ? 'bg-white/10 text-white' : 'text-white/60 hover:text-white'
+            }`}>
+            {label} ({count})
+          </button>
+        ))}
+      </div>
+
       {loading ? (
         <p className="text-white/60">Loading...</p>
-      ) : pending.length === 0 ? (
-        <p className="text-white/60">Nothing waiting for review.</p>
+      ) : shown.length === 0 ? (
+        <p className="text-white/60">Nothing here.</p>
       ) : (
         <div className="space-y-3">
-          {pending.map((m) => (
+          {shown.map((m) => (
             <div key={m.id}
               className="flex flex-col gap-4 rounded-xl border border-white/10 bg-white/5 p-4 sm:flex-row sm:items-center">
               <img src={m.photo_url} alt={m.name}
@@ -122,14 +139,18 @@ function Dashboard({ onLogout }) {
                 <p className="mt-1 line-clamp-2 text-sm text-white/70">{m.bio}</p>
               </div>
               <div className="flex flex-wrap gap-2">
-                <button onClick={() => setStatus(m.id, 'approved')}
-                  className="rounded-lg bg-emerald-500 px-3 py-1.5 text-sm font-medium text-black hover:bg-emerald-400">
-                  Approve
-                </button>
-                <button onClick={() => setStatus(m.id, 'rejected')}
-                  className="rounded-lg bg-red-500 px-3 py-1.5 text-sm font-medium text-black hover:bg-red-400">
-                  Reject
-                </button>
+                {m.status !== 'approved' && (
+                  <button onClick={() => setStatus(m.id, 'approved')}
+                    className="rounded-lg bg-emerald-500 px-3 py-1.5 text-sm font-medium text-black hover:bg-emerald-400">
+                    Approve
+                  </button>
+                )}
+                {m.status !== 'rejected' && (
+                  <button onClick={() => setStatus(m.id, 'rejected')}
+                    className="rounded-lg bg-red-500 px-3 py-1.5 text-sm font-medium text-black hover:bg-red-400">
+                    Reject
+                  </button>
+                )}
                 <button onClick={() => remove(m.id)}
                   className="rounded-lg border border-white/10 px-3 py-1.5 text-sm text-white/70 hover:text-white">
                   Delete
