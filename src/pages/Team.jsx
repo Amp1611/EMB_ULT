@@ -34,7 +34,7 @@ export default function Team() {
 
   return (
     <div className="mx-auto max-w-6xl space-y-6 p-4 md:p-8">
-      <h1 className="text-3xl font-semibold">Meet the team</h1>
+        <h1 className="gradient-text text-3xl font-bold">Meet the team</h1>
 
       <div className="flex flex-wrap gap-3">
         <select value={domain} onChange={(e) => setDomain(e.target.value)} className={selectClass}>

@@ -15,8 +15,8 @@ export default function App() {
   return (
     <div className="min-h-screen">
       <Toaster position="top-right" />
-            <nav className="flex flex-wrap items-center gap-2 border-b border-white/10 px-4 py-3">
-        <span className="mr-4 font-semibold">Embrione</span>
+              <nav className="sticky top-0 z-10 flex flex-wrap items-center gap-2 border-b border-white/10 bg-black/40 px-4 py-3 backdrop-blur">
+        <span className="gradient-text mr-4 text-lg font-bold tracking-wide">Embrione</span>
         <NavLink to="/register" className={linkClass}>Register</NavLink>
         <NavLink to="/team" className={linkClass}>Team</NavLink>
         <NavLink to="/admin" className={linkClass}>Admin</NavLink>

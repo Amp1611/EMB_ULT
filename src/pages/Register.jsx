@@ -101,7 +101,7 @@ export default function Register() {
   return (
     <div className="mx-auto grid max-w-6xl gap-8 p-4 md:p-8 lg:grid-cols-2">
       <form onSubmit={handleSubmit} className="space-y-4">
-        <h1 className="text-2xl font-semibold">Join the team</h1>
+        <h1 className="gradient-text text-3xl font-bold">Join the team</h1>
 
         <Field label="Full name">
           <input name="name" value={form.name} onChange={set} required className={inputClass} />

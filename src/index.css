@@ -1,2 +1,28 @@
 @import "tailwindcss";
-body { background: #0a0a0f; color: #e8e8ee; margin: 0; }
+@source "./";
+
+:root {
+  --accent: #22d3ee;
+  --accent-2: #8b5cf6;
+}
+
+body {
+  margin: 0;
+  color: #e8e8ee;
+  background-color: #07070c;
+  background-image:
+    radial-gradient(60rem 40rem at 10% -10%, rgba(139, 92, 246, 0.18), transparent 60%),
+    radial-gradient(50rem 35rem at 100% 0%, rgba(34, 211, 238, 0.14), transparent 60%);
+  background-attachment: fixed;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+::selection { background: rgba(34, 211, 238, 0.35); }
+
+/* Reusable gradient text for headings */
+.gradient-text {
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}

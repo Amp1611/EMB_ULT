@@ -89,7 +89,7 @@ function Dashboard({ onLogout }) {
   return (
     <div className="mx-auto max-w-5xl space-y-6 p-4 md:p-8">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">Moderation</h1>
+         <h1 className="gradient-text text-3xl font-bold">Moderation</h1>
         <button onClick={onLogout}
           className="rounded-lg border border-white/10 px-3 py-1.5 text-sm text-white/70 hover:text-white">
           Log out
