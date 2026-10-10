@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react'
+import toast from 'react-hot-toast'
 import MemberCard from '../components/MemberCard'
+import { supabase } from '../supabase'
+import { convertToWebP } from '../utils/webp'
 
 const DOMAINS = ['Web Development', 'Design', 'Logistics', 'Operations',
   'Sponsorship', 'Hospitality', 'Social Media', 'Event Management']
@@ -28,6 +31,7 @@ export default function Register() {
   const [form, setForm] = useState(empty)
   const [file, setFile] = useState(null)
   const [previewUrl, setPreviewUrl] = useState('')
+  const [submitting, setSubmitting] = useState(false)
 
   useEffect(() => {
     if (!file) { setPreviewUrl(''); return }
@@ -38,10 +42,60 @@ export default function Register() {
 
   const set = (e) => setForm({ ...form, [e.target.name]: e.target.value })
 
-  const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
     e.preventDefault()
-    // Step 4 adds WebP conversion + upload + insert here
-    console.log('submit', form, file)
+    if (!file) {
+      toast.error('Please choose a profile picture')
+      return
+    }
+
+    setSubmitting(true)
+    try {
+      const srn = form.srn.trim().toUpperCase()
+
+      // Duplicate SRN check
+      const { data: existing, error: checkError } = await supabase
+        .from('members')
+        .select('id')
+        .eq('srn', srn)
+        .limit(1)
+      if (checkError) throw checkError
+      if (existing.length > 0) {
+        toast.error('This SRN has already been submitted')
+        return
+      }
+
+      // Convert to WebP, then upload
+      const webpBlob = await convertToWebP(file)
+      const path = `${srn}-${Date.now()}.webp`
+      const { error: uploadError } = await supabase.storage
+        .from('member-photos')
+        .upload(path, webpBlob, { contentType: 'image/webp' })
+      if (uploadError) throw uploadError
+
+      const { data: urlData } = supabase.storage
+        .from('member-photos')
+        .getPublicUrl(path)
+
+      // Insert the member as pending
+      const { error: insertError } = await supabase.from('members').insert({
+        ...form,
+        srn,
+        semester: Number(form.semester),
+        photo_url: urlData.publicUrl,
+        status: 'pending',
+      })
+      if (insertError) throw insertError
+
+      toast.success('Submitted! An admin will review your profile.')
+      setForm(empty)
+      setFile(null)
+    } catch (err) {
+      console.error(err)
+      toast.error(err.message || 'Something went wrong')
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (
@@ -112,9 +166,9 @@ export default function Register() {
             className="text-sm file:mr-3 file:rounded-md file:border-0 file:bg-white/10 file:px-3 file:py-1.5 file:text-white" />
         </Field>
 
-        <button type="submit"
-          className="rounded-lg bg-cyan-500 px-5 py-2 font-medium text-black hover:bg-cyan-400">
-          Submit for approval
+                <button type="submit" disabled={submitting}
+          className="rounded-lg bg-cyan-500 px-5 py-2 font-medium text-black hover:bg-cyan-400 disabled:opacity-50">
+          {submitting ? 'Submitting...' : 'Submit for approval'}
         </button>
       </form>
 
