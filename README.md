@@ -12,7 +12,7 @@ React + Vite, Tailwind CSS, Supabase (PostgreSQL + Storage), react-router-dom, r
 
 ## Setup
 1. Clone the repo and run `npm install`
-2. Create a Supabase project, then run the SQL schema (members table, RLS policies, public `member-photos` bucket)
+2. Create a Supabase project, then run `supabase/schema.sql` in the Supabase SQL Editor (creates the members table, RLS policies, the public `member-photos` bucket and sample data)
 3. Create a `.env` file:
 ```
    VITE_SUPABASE_URL=your_supabase_url
