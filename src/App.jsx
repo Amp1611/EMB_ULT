@@ -2,6 +2,7 @@ import { Routes, Route, NavLink, Navigate } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 import Register from './pages/Register'
 import Admin from './pages/Admin'
+import Team from './pages/Team'
 
 const Placeholder = ({ title }) => (
   <div className="p-8 text-white/60">{title} (coming soon)</div>
@@ -23,7 +24,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Navigate to="/register" replace />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/team" element={<Placeholder title="Team" />} />
+        <Route path="/team" element={<Team />} />
         <Route path="/admin" element={<Admin />} />
       </Routes>
     </div>
