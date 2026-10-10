@@ -1,16 +1,28 @@
-# React + Vite
+# Embrione: Meet The Team
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Onboarding and moderation system for The Embrione web development challenge.
 
-Currently, two official plugins are available:
+## Features
+- `/register`: member form with a live card preview, client-side WebP conversion (max 800px, quality 0.8), upload to Supabase Storage, duplicate SRN check
+- `/admin`: login-protected dashboard with counters and Approve / Reject / Delete
+- `/team`: public directory showing approved members only, with Domain and Position filters
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Tech stack
+React + Vite, Tailwind CSS, Supabase (PostgreSQL + Storage), react-router-dom, react-hot-toast, deployed on Vercel.
 
-## React Compiler
+## Setup
+1. Clone the repo and run `npm install`
+2. Create a Supabase project, then run the SQL schema (members table, RLS policies, public `member-photos` bucket)
+3. Create a `.env` file:
+```
+   VITE_SUPABASE_URL=your_supabase_url
+   VITE_SUPABASE_ANON_KEY=your_supabase_publishable_key
+```
+4. Run `npm run dev`
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Admin login
+Email: `admin@embrione.pes.edu`
+Password: `EmbrioneAdmin@2026`
 
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+## Author
+Amartya Maiya P, PES1UG25CS050
