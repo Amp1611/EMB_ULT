@@ -121,7 +121,7 @@ function Dashboard({ onLogout }) {
                 </p>
                 <p className="mt-1 line-clamp-2 text-sm text-white/70">{m.bio}</p>
               </div>
-              <div className="flex gap-2">
+              <div className="flex flex-wrap gap-2">
                 <button onClick={() => setStatus(m.id, 'approved')}
                   className="rounded-lg bg-emerald-500 px-3 py-1.5 text-sm font-medium text-black hover:bg-emerald-400">
                   Approve
