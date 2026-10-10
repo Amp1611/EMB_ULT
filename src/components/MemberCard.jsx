@@ -31,7 +31,7 @@ export default function MemberCard({ member }) {
   const github = safeUrl(github_url)
 
   return (
-    <div className="w-full max-w-sm rounded-2xl border border-white/10 bg-white/5 p-5">
+        <div className="w-full max-w-sm rounded-2xl border border-white/10 bg-white/5 p-5 transition duration-300 hover:-translate-y-1 hover:border-cyan-400/50 hover:bg-white/10 hover:shadow-lg hover:shadow-cyan-500/10">
       <div className="flex items-center gap-4">
         {photoUrl ? (
           <img src={photoUrl} alt={name || 'Profile'}
